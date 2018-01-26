@@ -1,3 +1,5 @@
+"use strict";
+
 function uniq(a) {
   var seen = {};
   return a.filter(function(item) {
@@ -5,60 +7,71 @@ function uniq(a) {
   });
 }
 
-const usersPostsCommentsCreator = () => {
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let usersPostsComments = [];
+var usersPostsCommentsCreator = function usersPostsCommentsCreator() {
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var usersPostsComments = [];
 
-  for (let i = 0; i < 10; i++) {
-    let randomLength = new Array(Math.ceil(Math.random() * 10)).fill(null);
+  var _loop = function _loop(i) {
+    var randomLength = new Array(Math.ceil(Math.random() * 10)).fill(null);
 
     usersPostsComments.push({
       id: i + 1,
       username: randomLength
-        .map(
-          e => possible.split("")[Math.floor(Math.random() * possible.length)]
-        )
+        .map(function(e) {
+          return possible.split(
+            ""
+          )[Math.floor(Math.random() * possible.length)];
+        })
         .join(""),
-      posts: randomLength.map((e, i) => ({
-        id: (i + 1) * Math.ceil(Math.random() * 10000),
-        imgUrl: "https://i.redd.it/l4ln1550f3a01.jpg",
-        comments: randomLength.map((e, i) => ({
-          id: (100 - i) * Math.ceil(Math.random() * 10000),
-          content:
-            "Supply chain and resource distribution " +
-            randomLength
-              .map(
-                e =>
-                  possible.split("")[
-                    Math.floor(Math.random() * possible.length)
-                  ]
-              )
-              .join(""),
-          post: (i + 1) * randomLength.length,
-          user: i + 1
-        }))
-      }))
+      posts: randomLength.map(function(e, i) {
+        return {
+          id: (i + 1) * Math.ceil(Math.random() * 10000),
+          imgUrl: "https://i.redd.it/l4ln1550f3a01.jpg",
+          comments: randomLength.map(function(e, i) {
+            return {
+              id: (100 - i) * Math.ceil(Math.random() * 10000),
+              content:
+                "Supply chain and resource distribution " +
+                randomLength
+                  .map(function(e) {
+                    return possible.split(
+                      ""
+                    )[Math.floor(Math.random() * possible.length)];
+                  })
+                  .join(""),
+              post: (i + 1) * randomLength.length,
+              user: i + 1
+            };
+          })
+        };
+      })
     });
+  };
+
+  for (var i = 0; i < 10; i++) {
+    _loop(i);
   }
 
   return usersPostsComments;
 };
 
-const commentsPostUserCreator = () => {
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let commentsPostUserCreator = [];
+var commentsPostUserCreator = function commentsPostUserCreator() {
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var commentsPostUserCreator = [];
 
-  for (let i = 0; i < 10; i++) {
-    let randomLength = new Array(Math.ceil(Math.random() * 10)).fill(null);
+  for (var i = 0; i < 10; i++) {
+    var _randomLength = new Array(Math.ceil(Math.random() * 10)).fill(null);
 
     commentsPostUserCreator.push({
       id: (100 - i) * Math.ceil(Math.random() * 10000),
       content:
         "Supply chain and resource distribution " +
-        randomLength
-          .map(
-            e => possible.split("")[Math.floor(Math.random() * possible.length)]
-          )
+        _randomLength
+          .map(function(e) {
+            return possible.split(
+              ""
+            )[Math.floor(Math.random() * possible.length)];
+          })
           .join(""),
       post: {
         id: (i + 1) * Math.ceil(Math.random() * 1000000),
@@ -66,10 +79,12 @@ const commentsPostUserCreator = () => {
       },
       user: {
         id: i + 1,
-        username: randomLength
-          .map(
-            e => possible.split("")[Math.floor(Math.random() * possible.length)]
-          )
+        username: _randomLength
+          .map(function(e) {
+            return possible.split(
+              ""
+            )[Math.floor(Math.random() * possible.length)];
+          })
           .join("")
       }
     });
@@ -78,12 +93,12 @@ const commentsPostUserCreator = () => {
   return commentsPostUserCreator;
 };
 
-const postsUserCommentsCreator = () => {
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let postsUserCommentsCreator = [];
+var postsUserCommentsCreator = function postsUserCommentsCreator() {
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var postsUserCommentsCreator = [];
 
-  for (let i = 0; i < 10; i++) {
-    let randomLength = new Array(Math.ceil(Math.random() * 10)).fill(null);
+  var _loop2 = function _loop2(i) {
+    var randomLength = new Array(Math.ceil(Math.random() * 10)).fill(null);
 
     postsUserCommentsCreator.push({
       id: (i + 1) * Math.ceil(Math.random() * 1000000),
@@ -91,25 +106,34 @@ const postsUserCommentsCreator = () => {
       user: {
         id: i + 1,
         username: randomLength
-          .map(
-            e => possible.split("")[Math.floor(Math.random() * possible.length)]
-          )
+          .map(function(e) {
+            return possible.split(
+              ""
+            )[Math.floor(Math.random() * possible.length)];
+          })
           .join("")
       },
-      comments: randomLength.map((e, i) => ({
-        id: (100 - i) * Math.ceil(Math.random() * 10000),
-        content:
-          "Supply chain and resource distribution " +
-          randomLength
-            .map(
-              e =>
-                possible.split("")[Math.floor(Math.random() * possible.length)]
-            )
-            .join(""),
-        post: (i + 1) * randomLength.length,
-        user: i + 1
-      }))
+      comments: randomLength.map(function(e, i) {
+        return {
+          id: (100 - i) * Math.ceil(Math.random() * 10000),
+          content:
+            "Supply chain and resource distribution " +
+            randomLength
+              .map(function(e) {
+                return possible.split(
+                  ""
+                )[Math.floor(Math.random() * possible.length)];
+              })
+              .join(""),
+          post: (i + 1) * randomLength.length,
+          user: i + 1
+        };
+      })
     });
+  };
+
+  for (var i = 0; i < 10; i++) {
+    _loop2(i);
   }
 
   return postsUserCommentsCreator;

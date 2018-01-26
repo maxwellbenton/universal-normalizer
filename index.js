@@ -1,10 +1,73 @@
-let entities = {};
-let prevEntities = { entities: {} };
-let results = [];
-let test = 0;
+"use strict";
 
-const isObject = item => {
-  return item && typeof item === "object" && !Array.isArray(item);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends =
+  Object.assign ||
+  function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+
+var _typeof =
+  typeof Symbol === "function" && typeof Symbol.iterator === "symbol"
+    ? function(obj) {
+        return typeof obj;
+      }
+    : function(obj) {
+        return obj &&
+          typeof Symbol === "function" &&
+          obj.constructor === Symbol &&
+          obj !== Symbol.prototype
+          ? "symbol"
+          : typeof obj;
+      };
+
+function _toConsumableArray(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+
+var entities = {};
+var prevEntities = { entities: {} };
+var results = [];
+var test = 0;
+
+var isObject = function isObject(item) {
+  return (
+    item &&
+    (typeof item === "undefined" ? "undefined" : _typeof(item)) === "object" &&
+    !Array.isArray(item)
+  );
 };
 
 function unique(array) {
@@ -16,9 +79,12 @@ function unique(array) {
 
 //in a given object, check if any descendants are objects or arrays
 //if an object or array is found, it passes the value and key
-const checkForNestedObjects = (object, objectTableName = null) => {
-  let keys = Object.keys(object);
-  for (let j = 0; j < keys.length; j++) {
+var checkForNestedObjects = function checkForNestedObjects(object) {
+  var objectTableName =
+    arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+  var keys = Object.keys(object);
+  for (var j = 0; j < keys.length; j++) {
     if (isObject(object[keys[j]]))
       object[keys[j]] = convertToReferenceAndReplaceObject(
         keys[j],
@@ -40,15 +106,15 @@ const checkForNestedObjects = (object, objectTableName = null) => {
 //given an array of objects, and the entityTableName they belong to,
 //add each object to it's entity object and replace the array elements with id references
 //checks recursively first for any nested descendants further down
-const convertToEntitiesAndReplaceObjects = (
+var convertToEntitiesAndReplaceObjects = function convertToEntitiesAndReplaceObjects(
   entityTableName,
   arrayToConvert,
   parentTableName,
   parentId
-) => {
-  let replacementIdArray = [];
+) {
+  var replacementIdArray = [];
 
-  for (let k = 0; k < arrayToConvert.length; k++) {
+  for (var k = 0; k < arrayToConvert.length; k++) {
     checkForNestedObjects(arrayToConvert[k], entityTableName);
 
     addObjectToEntityTable(arrayToConvert[k], entityTableName);
@@ -66,13 +132,17 @@ const convertToEntitiesAndReplaceObjects = (
 
 //converts an ancestor object to an id reference and adds ancestor object to it's entity type
 //if ancestor key is not pointed to an object, returns the original value
-const convertToReferenceAndReplaceObject = (
+var convertToReferenceAndReplaceObject = function convertToReferenceAndReplaceObject(
   entityTableName,
   objectToConvert,
   parentTableName,
   parentId
-) => {
-  if (typeof objectToConvert === "object") {
+) {
+  if (
+    (typeof objectToConvert === "undefined"
+      ? "undefined"
+      : _typeof(objectToConvert)) === "object"
+  ) {
     if (!objectToConvert.id)
       objectToConvert.id = Math.random()
         .toString(36)
@@ -91,7 +161,10 @@ const convertToReferenceAndReplaceObject = (
 };
 
 //adds object to it's entity type, with it's id as it's key
-const addObjectToEntityTable = (object, entityTableName) => {
+var addObjectToEntityTable = function addObjectToEntityTable(
+  object,
+  entityTableName
+) {
   if (prevEntities.entities[entityTableName + "s"]) {
     entityTableName = entityTableName + "s";
   }
@@ -115,23 +188,29 @@ const addObjectToEntityTable = (object, entityTableName) => {
 
   // debugger;
   //
-  entities[entityTableName] = {
-    ...entities[entityTableName],
-    [object.id]: {
-      ...prevEntities.entities[entityTableName][object.id],
-      ...entities[entityTableName][object.id],
-      ...object
-    }
-  };
+  entities[entityTableName] = _extends(
+    {},
+    entities[entityTableName],
+    _defineProperty(
+      {},
+      object.id,
+      _extends(
+        {},
+        prevEntities.entities[entityTableName][object.id],
+        entities[entityTableName][object.id],
+        object
+      )
+    )
+  );
 };
 
 //adds object's parent id, as JSON nested object often don't know who they belong to
-const addParentReference = (
+var addParentReference = function addParentReference(
   entityTableName,
   objectToConvert,
   parentTableName,
   parentId
-) => {
+) {
   if (!parentTableName) return;
   if (!parentId) return;
 
@@ -158,16 +237,26 @@ const addParentReference = (
     entities[entityTableName][objectToConvert.id][parentTableName] = [];
   // if (entityTableName === "posts") debugger;
   //
-  entities[entityTableName][objectToConvert.id] = {
-    ...entities[entityTableName][objectToConvert.id],
-    [parentTableName]: [
-      ...entities[entityTableName][objectToConvert.id][parentTableName],
-      parentId
-    ]
-  };
+  entities[entityTableName][objectToConvert.id] = _extends(
+    {},
+    entities[entityTableName][objectToConvert.id],
+    _defineProperty(
+      {},
+      parentTableName,
+      [].concat(
+        _toConsumableArray(
+          entities[entityTableName][objectToConvert.id][parentTableName]
+        ),
+        [parentId]
+      )
+    )
+  );
 };
 
-const normalize = (data, parentTableName, previousEntities, options = {}) => {
+var normalize = function normalize(data, parentTableName, previousEntities) {
+  var options =
+    arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
   //options:
   //[] => additional idKeys to search
   //boolean (true) => merge singular, plural
@@ -177,7 +266,10 @@ const normalize = (data, parentTableName, previousEntities, options = {}) => {
   if (!parentTableName) return data;
   if (
     !(Array.isArray(data) && data[0]) &&
-    !(data !== null && typeof data === "object")
+    !(
+      data !== null &&
+      (typeof data === "undefined" ? "undefined" : _typeof(data)) === "object"
+    )
   )
     return data;
   if (previousEntities) prevEntities = previousEntities;
@@ -197,7 +289,7 @@ const normalize = (data, parentTableName, previousEntities, options = {}) => {
   //begin normalization process by iterating over parent array of objects
 
   if (Array.isArray(data) && data[0]) {
-    for (let i = 0; i < data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
       // if (!data[i].id)
       //   data[i].id = Math.random()
       //     .toString(36)
@@ -207,8 +299,11 @@ const normalize = (data, parentTableName, previousEntities, options = {}) => {
       results.push(data[i].id);
     }
     test += 1;
-    return { entities };
-  } else if (data !== null && typeof data === "object") {
+    return { entities: entities };
+  } else if (
+    data !== null &&
+    (typeof data === "undefined" ? "undefined" : _typeof(data)) === "object"
+  ) {
     if (!data.id)
       data.id = Math.random()
         .toString(36)
@@ -220,10 +315,10 @@ const normalize = (data, parentTableName, previousEntities, options = {}) => {
       "-1"
     );
     test += 1;
-    return { entities };
+    return { entities: entities };
   } else {
     return data;
   }
 };
 
-// export default normalize;
+exports.default = normalize;
