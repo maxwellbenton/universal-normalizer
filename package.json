@@ -1,6 +1,6 @@
 {
   "name": "universal-normalizer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple, general normalizer function for converting JSON nested data to relational data objects.",
   "main": "index.js",
   "scripts": {
