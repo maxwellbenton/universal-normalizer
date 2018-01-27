@@ -16,15 +16,27 @@ Universal Normalizer will recursively check through any array or object it is gi
 For objects:
 
 * Checks for any nested arrays or objects
-* Using an id key or an alternative provided by the user, a key:value pair, ```[object.id]: object```, is created in a separate, new entity object.  This object is organized by the keys of all objects or arrays the function finds during recursion.
+* Using the object's id key, a key:value pair, ```[object.id]: object```, is created in a separate, new entity object.  This object is organized by the keys of all objects or arrays the function finds during recursion.
 * If not already present, the id of the parent object is added to the new object so each nested child has a reference to its parent
 * The object is then replaced by the value of its id
+
+Say an object representing a student's data was passed into the normalier with the parentTableName "students".
+```{id: 4, first_name: "Evan", school: {id: 3212, name: "John Jay High", ...}, grade: 12, ...}```
+
+becomes
+
+```
+entities.students[4] === {id: 4, first_name: "Evan", school: 3212, grade: 12}
+entities.school[3212] === {id: 3212, name: "John Jay High", students=[4], ...}
+```
 
 For arrays of objects:
 
 * Iterates over the array checking each object within
 * Adds each to their respective entity objects
 * Replaces the object with its id value
+
+```[{id: 3, ...}, {id: 12, ...}, {id: 43, ...}] => [3, 12, 43]```
 
 This process eliminates duplicate data, changing objects to references, creating a single source of truth for related data, and de-nesting all related data into a table-like structure.  
 
