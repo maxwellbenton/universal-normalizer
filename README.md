@@ -56,15 +56,19 @@ Import into a JavaScript file by including ```import normalize from 'universal-n
 
 The normalize() function takes two required arguments currently.
 
-```const output = normalize(data, parentTableName)```
+```const output = normalize(data, parentTableName, previousEntityTables)```
 
 ### data (required, {Object} or [Array])
 
 The original JSON array or object, such as an array of users or messages, with objects nested inside, at any depth.
 
-### parentKey (optional, but recommended, "String")
+### parentKey (required, "String")
 
 A string representing the name of the 'table' for the top level object or array of objects.  If you pass in an array of users, parentTableName would be "users".  This is used to add the top level object(s) to their corresponding entities object.
+
+### previousEntityTables (optional, {Object})
+
+An object of previously normalized data.  When passed into the normalizer, its data is deep merged with the the new entity tables being created, allowing a user to more easily add data, even from differently structured API endpoints.
 
 ## Cautions
 
