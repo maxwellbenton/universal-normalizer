@@ -1,5 +1,14 @@
 # Universal Normalizer
 
+## Currently Under Development -- Version 1.0.3 will only work with nested JSON data where all related objects have 'id' keys.
+
+Currently working on
+* Building more robust options for output of complex nested data
+* Adding functionality for unique id key names (i.g. 'username')
+* Error handling
+* Cleaner recursion
+
+
 Universal Normalizer is a simple, automatic normalizer of nested JSON data, converting nested arrays and objects into relational data sets.  Normalization is helpful in situations where you are dealing with nested JSON data from an API, particularly APIs from relational databases.  Normalizing your data will help you maintain data integrity, preserve data relationships on your frontend, standardize data references in your code and give you some significant performance boosts when handling a lot of data.
 
 Universal Normalizer will recursively check through any array or object it is given for any nested arrays or objects.  For each one found, including the top level object or array, the normalizer does the following:
@@ -33,26 +42,23 @@ Import into a JavaScript file by including ```import normalize from 'universal-n
 
 ## Usage
 
-The normalize() function takes one required and two optional argument.
+The normalize() function takes two required arguments currently.
 
-```const output = normalize(data, parentKey, idKeys)```
+```const output = normalize(data, parentTableName)```
 
 ### data (required, {Object} or [Array])
 
-The original JSON array or object, such as an array of users or messages.
+The original JSON array or object, such as an array of users or messages, with objects nested inside, at any depth.
 
 ### parentKey (optional, but recommended, "String")
 
-A string representing a key for the top level object or array of objects.  If you pass in an array of users, parentKey would be "users".  This is used to add the top level object(s) to their corresponding entities object.  If no parentKey is provided, the top level objects will be move to a entities.parents object.
-
-### idKeys (optional, [Array])
-
-An array of strings that can be used as unique keys.  For instance, if you wanted to store users by their username, put ["username"] here.  The normalize function checks for these keys first before looking for an "id" key to use for copying.
+A string representing the name of the 'table' for the top level object or array of objects.  If you pass in an array of users, parentTableName would be "users".  This is used to add the top level object(s) to their corresponding entities object.
 
 ## Cautions
 
-The normalize() function modifies your objects, will overwrite and add values in your data.  Because of the general purpose of this function, not all of these values may be necessary or relevant.  Say for instance, you pass in a JSON object of a song, and the song has a nested 'album' object.  Both song and album will be copied to new entities, but while a song object may need to store an album id, the album will also get assigned a song id even though it likely has an array of songs that belong to it already.  This id would get replaced every time a duplicate of the album object is found in a song.
+The normalize() function modifies your objects, will overwrite and add values in your data.  Because of the general purpose of this function, not all of these values may be necessary or relevant, and are purely based on the parent/child relationship of nested data.  Say for instance, you pass in a JSON object of a song, and the song has a nested 'album' object.  Both song and album will be copied to new entity 'tables.'  The song will have an id refering to its album instead of the album object inside, and the album will also have a reference id, stored in an array, of the song and any other songs that reference the album that are found during normalization.  
 
-The normalize() function is indiscriminate about what objects and arrays it finds and will try to normalize them, even if the particular piece of data doesn't need to be.
+
+The normalize() function is indiscriminate about what objects and arrays of objects it finds and will try to normalize them, even if the particular piece of data doesn't need to be.  It will not currently normalize objects that do not have id keys.
 
 Check how your data is being modified and rearranged before by logging the output compared to input data to make sure there are no transcription errors.
