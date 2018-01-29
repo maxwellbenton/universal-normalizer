@@ -1,7 +1,8 @@
 {
   "name": "universal-normalizer",
-  "version": "1.0.3",
-  "description": "A simple, general normalizer function for converting JSON nested data to relational data objects.",
+  "version": "1.0.4",
+  "description":
+    "A simple, general normalizer function for converting JSON nested data to relational data objects.",
   "main": "index.js",
   "scripts": {
     "test": "echo \\\\\\\"Error: no test specified\\\\\\\" && exit 1\\"
@@ -10,11 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/maxwellbenton/universal-normalizer.git"
   },
-  "keywords": [
-    "normalize",
-    "normalization"
-  ],
-  "author": "Maxwell Benton <maxwellbenton@gmail.com> (http://maxwellrowlandbenton.com)",
+  "keywords": ["normalize", "normalization"],
+  "author":
+    "Maxwell Benton <maxwellbenton@gmail.com> (http://maxwellrowlandbenton.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/maxwellbenton/universal-normalizer/issues"
